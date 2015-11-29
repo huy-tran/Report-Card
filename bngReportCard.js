@@ -17,8 +17,11 @@ var ReportCard = {
 			self.build(data, self.settings, badgesAmount);
 			self.displayInfo(data, self.settings); 
 			self.styleBadges(data, self.settings, badgesAmount);
-		})
+		});
 		
+		this.promiseObj.fail(function(error){
+			self.$elem.html(error);
+		})
 		return this;
 	},
 	defaults: {
@@ -50,10 +53,10 @@ var ReportCard = {
 				},
 				success: function(data){	
 					promise.resolve(data);
-					console.log(data)
 				},
-				error: function(error){
-					self.$elem.html("<em class='warning--badges'>Something is wrong. Please check your Username</em>");
+				error: function(){
+					var error = "<em class='warning--badges'>Something is wrong. Please check your Username</em>";
+					promise.reject(error);
 				},
 				complete: function(){
 					elem.children('.sk-circle').remove();
